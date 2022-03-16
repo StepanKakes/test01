@@ -3,6 +3,8 @@ pins.touchSetMode(TouchTarget.P2, TouchTargetMode.Capacitive)
 let pismeno = "S"
 let interval = 0
 let start = false
+let brzo1 = false
+let brzo2 = false
 basic.forever(function on_forever() {
     
     let pin1 = input.pinIsPressed(TouchPin.P1)
@@ -27,18 +29,17 @@ basic.forever(function on_forever() {
         
     } else if (start == false) {
         if (pin1) {
+            brzo1 = true
             pismeno = "A"
-            start = false
         }
         
         if (pin2) {
+            brzo2 = true
             pismeno = "B"
-            start = false
         }
         
-        if (pin1 && pin2) {
+        if (brzo1 == true && brzo2 == true) {
             pismeno = "C"
-            start = false
         }
         
     }
@@ -52,6 +53,4 @@ control.inBackground(function on_in_background() {
     basic.showString(pismeno)
     start = true
     music.playTone(262, music.beat(1500))
-    basic.pause(3000)
-    control.reset()
 })

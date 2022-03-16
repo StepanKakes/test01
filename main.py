@@ -4,10 +4,12 @@ pins.touch_set_mode(TouchTarget.P2, TouchTargetMode.CAPACITIVE)
 pismeno = "S"
 interval = 0
 start = False
+brzo1=False
+brzo2=False
 
 
 def on_forever():
-    global start, pismeno
+    global start, pismeno, brzo1, brzo2
     pin1 = input.pin_is_pressed(TouchPin.P1)
     pin2 = input.pin_is_pressed(TouchPin.P2)
     console.log_value("pin1", pin1)
@@ -24,14 +26,13 @@ def on_forever():
             basic.show_string("R")
     elif start == False:
         if pin1:
+            brzo1=True
             pismeno = "A"
-            start = False
         if pin2:
+            brzo2=True
             pismeno = "B"
-            start = False
-        if pin1 and pin2:
+        if brzo1==True and brzo2==True:
             pismeno = "C"
-            start = False
 basic.forever(on_forever)
 
 def on_in_background():
@@ -42,6 +43,4 @@ def on_in_background():
     basic.show_string(pismeno)
     start = True
     music.play_tone(262, music.beat(1500))
-    basic.pause(3000)
-    control.reset()
 control.in_background(on_in_background)
